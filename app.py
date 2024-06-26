@@ -60,14 +60,15 @@ def get_conversation_chain(vectorstore):
 
 
 def handle_userinput(user_question):
-    response = st.session_state.conversation.invoke({'question': user_question})
-    st.session_state.chat_history = response['chat_history']
+    if st.session_state.conversation:
+        response = st.session_state.conversation.invoke({'question': user_question})
+        st.session_state.chat_history = response['chat_history']
 
-    for i, message in enumerate(st.session_state.chat_history):
-        if i % 2 == 0:
-            st.markdown(user_template(message.content), unsafe_allow_html=True)
-        else:
-            st.markdown(bot_template(message.content), unsafe_allow_html=True)
+        for i, message in enumerate(st.session_state.chat_history):
+            if i % 2 == 0:
+                st.markdown(user_template(message.content), unsafe_allow_html=True)
+            else:
+                st.markdown(bot_template(message.content), unsafe_allow_html=True)
 
 
 def main():
